@@ -96,8 +96,16 @@ ruff check app tests
 
 ## Документация
 
-- [Пояснительная записка](POYASNITELNA_ZAPISKA.md)
-- [Архитектура и диаграммы](docs/ARCHITECTURE.md)
+| Документ | Назначение |
+|----------|------------|
+| [Пояснительная записка](POYASNITELNA_ZAPISKA.md) | Текст курсовой |
+| [Архитектура](docs/ARCHITECTURE.md) | Диаграммы Mermaid |
+| [Презентация](docs/PREZENTACIYA.md) | Структура слайдов к защите |
+| [Сценарий демо](docs/DEMO_ZASHCHITA.md) | Пошаговая демонстрация |
+| [Приложения](docs/PRILOZHENIYA.md) | Список скриншотов |
+| [Задание (вариант 4)](ZADANIE_KURSOVOJ.md) | Соответствие теме |
+
+**Репозиторий:** https://github.com/vadeetar/Kursach
 
 ## Переменные окружения
 
