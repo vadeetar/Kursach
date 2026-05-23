@@ -2,8 +2,6 @@
 
 from datetime import datetime
 
-import pytest
-
 from app.models import Asset, Ecosystem, SeverityLevel, Vulnerability
 from app.services.matcher import _product_matches_asset, _text_match
 from app.services.nvd_collector import NVDCollector
