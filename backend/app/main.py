@@ -21,8 +21,9 @@ STATIC_DIR = Path(__file__).parent / "static"
 async def lifespan(app: FastAPI):
     import os
 
+    # Таблицы создаём всегда; демо-данные — только не в pytest
+    init_db()
     if os.getenv("TESTING") != "1":
-        init_db()
         seed_demo_data()
     yield
 

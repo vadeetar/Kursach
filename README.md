@@ -18,7 +18,22 @@
 | Контейнеры | Docker, Docker Compose |
 | Качество | pytest, Bandit (SAST), pip-audit (SCA), GitHub Actions |
 
+## Быстрый старт (Windows, без Docker)
+
+Дважды щёлкните или в PowerShell из папки проекта:
+
+```powershell
+cd E:\курсач
+.\start.ps1
+```
+
+Откройте: http://127.0.0.1:8000
+
+> **ERR_CONNECTION_REFUSED** значит, что сервер не запущен — сначала выполните `.\start.ps1` и не закрывайте окно терминала.
+
 ## Быстрый старт (Docker)
+
+Нужен установленный [Docker Desktop](https://www.docker.com/products/docker-desktop/).
 
 ```bash
 cp .env.example .env

@@ -51,15 +51,19 @@ def health_check(db: Session = Depends(get_db)):
     try:
         db.execute(text("SELECT 1"))
         db_status = "ok"
+        cve_count = db.query(Vulnerability).count()
+        asset_count = db.query(Asset).count()
+        data_info = f"{cve_count} CVEs, {asset_count} assets"
     except Exception as exc:
         db_status = f"error: {exc}"
+        data_info = "unavailable"
 
     return HealthCheckResponse(
         status="healthy" if db_status == "ok" else "degraded",
         timestamp=datetime.utcnow(),
         services={
-            "postgres": db_status,
-            "data": f"{db.query(Vulnerability).count()} CVEs, {db.query(Asset).count()} assets",
+            "database": db_status,
+            "data": data_info,
         },
         version=settings.API_VERSION,
     )

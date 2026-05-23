@@ -2,6 +2,11 @@
 
 import os
 from functools import lru_cache
+from pathlib import Path
+
+# Абсолютный путь к SQLite — не зависит от текущей папки в терминале
+_BACKEND_DIR = Path(__file__).resolve().parent.parent
+_DEFAULT_SQLITE_URL = f"sqlite:///{(_BACKEND_DIR / 'vuln_mgmt.db').as_posix()}"
 
 
 class Settings:
@@ -12,10 +17,7 @@ class Settings:
     API_PREFIX: str = "/api/v1"
     DEBUG: bool = os.getenv("DEBUG", "true").lower() == "true"
 
-    DATABASE_URL: str = os.getenv(
-        "DATABASE_URL",
-        "sqlite:///./vuln_mgmt.db",
-    )
+    DATABASE_URL: str = os.getenv("DATABASE_URL", _DEFAULT_SQLITE_URL)
 
     NVD_API_KEY: str | None = os.getenv("NVD_API_KEY")
     NVD_SYNC_DAYS: int = int(os.getenv("NVD_SYNC_DAYS", "7"))
