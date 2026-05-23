@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Платформа управления уязвимостями</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="brand">
+      <h1>VulnMgmt</h1>
+      <p>Платформа управления уязвимостями · вариант 4</p>
+    </div>
+    <nav class="tabs" role="tablist">
+      <button class="tab active" data-tab="dashboard">Дашборд</button>
+      <button class="tab" data-tab="findings">Находки</button>
+      <button class="tab" data-tab="assets">Инвентарь</button>
+      <button class="tab" data-tab="vulnerabilities">CVE</button>
+      <button class="tab" data-tab="tasks">Синхронизация</button>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section id="dashboard" class="panel active">
+      <div class="stats-grid" id="stats-grid"></div>
+      <div class="card">
+        <h2>Рекомендации</h2>
+        <ul id="recommendations"></ul>
+      </div>
+    </section>
+
+    <section id="findings" class="panel">
+      <div class="toolbar">
+        <select id="finding-status-filter">
+          <option value="">Все статусы</option>
+          <option value="new">new</option>
+          <option value="assigned">assigned</option>
+          <option value="in_progress">in_progress</option>
+          <option value="fixed">fixed</option>
+        </select>
+        <select id="finding-priority-filter">
+          <option value="">Все приоритеты</option>
+          <option value="critical">critical</option>
+          <option value="high">high</option>
+          <option value="medium">medium</option>
+          <option value="low">low</option>
+        </select>
+        <label><input type="checkbox" id="overdue-only" /> Только просроченные</label>
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>ID</th><th>CVE</th><th>Пакет</th><th>CVSS</th><th>Риск</th>
+            <th>Приоритет</th><th>Статус</th><th>SLA</th><th>Действия</th>
+          </tr>
+        </thead>
+        <tbody id="findings-body"></tbody>
+      </table>
+    </section>
+
+    <section id="assets" class="panel">
+      <form id="asset-form" class="inline-form">
+        <select name="ecosystem" required>
+          <option value="pypi">pypi</option>
+          <option value="npm">npm</option>
+          <option value="maven">maven</option>
+          <option value="golang">golang</option>
+        </select>
+        <input name="package_name" placeholder="Имя пакета" required />
+        <input name="version" placeholder="Версия" required />
+        <select name="business_criticality">
+          <option value="standard">standard</option>
+          <option value="important">important</option>
+          <option value="critical">critical</option>
+        </select>
+        <button type="submit">Добавить</button>
+      </form>
+      <table class="data-table">
+        <thead><tr><th>ID</th><th>Экосистема</th><th>Пакет</th><th>Версия</th><th>Критичность</th><th>Команда</th></tr></thead>
+        <tbody id="assets-body"></tbody>
+      </table>
+    </section>
+
+    <section id="vulnerabilities" class="panel">
+      <input type="search" id="cve-search" placeholder="Поиск CVE или описания..." />
+      <table class="data-table">
+        <thead><tr><th>CVE</th><th>CVSS</th><th>EPSS</th><th>Severity</th><th>Описание</th></tr></thead>
+        <tbody id="vulns-body"></tbody>
+      </table>
+    </section>
+
+    <section id="tasks" class="panel">
+      <div class="card actions">
+        <h2>Интеграция с NVD / EPSS</h2>
+        <p>Синхронизация CVE из NIST NVD API, обновление EPSS и сопоставление с инвентаризацией.</p>
+        <div class="btn-row">
+          <button id="btn-sync-nvd">Синхронизировать NVD</button>
+          <button id="btn-update-epss">Обновить EPSS</button>
+          <button id="btn-match">Сопоставить с активами</button>
+        </div>
+        <pre id="task-log" class="log"></pre>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="finding-dialog">
+    <form method="dialog" id="finding-form">
+      <h3>Обновить статус исправления</h3>
+      <input type="hidden" name="finding_id" />
+      <label>Статус
+        <select name="status">
+          <option value="new">new</option>
+          <option value="assigned">assigned</option>
+          <option value="in_progress">in_progress</option>
+          <option value="fixed">fixed</option>
+          <option value="deferred">deferred</option>
+          <option value="wont_fix">wont_fix</option>
+        </select>
+      </label>
+      <label>Исполнитель <input name="assigned_to" /></label>
+      <label>Заметки <textarea name="remediation_notes"></textarea></label>
+      <menu>
+        <button type="submit">Сохранить</button>
+        <button type="button" id="dialog-cancel">Отмена</button>
+      </menu>
+    </form>
+  </dialog>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
