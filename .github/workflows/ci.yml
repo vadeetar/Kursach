@@ -33,7 +33,7 @@ jobs:
         env:
           DISABLE_SEED: "1"
           TESTING: "1"
-        run: pytest --cov=app --cov-report=term-missing --cov-fail-under=60 -q
+        run: pytest --cov=app --cov-report=term-missing --cov-fail-under=65 -q
 
       - name: pip-audit (SCA)
         run: pip-audit -r requirements.txt || true

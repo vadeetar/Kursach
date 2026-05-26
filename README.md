@@ -6,6 +6,8 @@
 
 Курсовой проект по дисциплине «Методы и технологии программирования».
 
+**Репозиторий:** https://github.com/vadeetar/Kursach
+
 Система сбора данных об уязвимостях (CVE, NVD), сопоставления с инвентаризацией ПО организации, приоритизации по CVSS/EPSS и веб-интерфейса для отслеживания статуса исправления.
 
 ## Стек
@@ -20,50 +22,43 @@
 
 ## Быстрый старт (Windows, без Docker)
 
-Дважды щёлкните или в PowerShell из папки проекта:
+Из корня проекта в PowerShell:
 
 ```powershell
 cd E:\курсач
 .\start.ps1
 ```
 
-Откройте: http://127.0.0.1:8000
+Не закрывайте окно терминала. Откройте:
 
-> **ERR_CONNECTION_REFUSED** значит, что сервер не запущен — сначала выполните `.\start.ps1` и не закрывайте окно терминала.
+- **Веб-интерфейс:** http://127.0.0.1:8000
+- **Swagger API:** http://127.0.0.1:8000/api/v1/docs
+
+> `ERR_CONNECTION_REFUSED` — сервер не запущен. Сначала выполните `.\start.ps1`.
+
+При первом запуске создаётся `backend\vuln_mgmt.db` и загружаются **демо-данные** (3 CVE, 3 пакета, находки).
 
 ## Быстрый старт (Docker)
 
-Нужен установленный [Docker Desktop](https://www.docker.com/products/docker-desktop/).
+Нужен [Docker Desktop](https://www.docker.com/products/docker-desktop/).
 
 ```bash
 cp .env.example .env
 docker compose up -d --build
 ```
 
-Откройте в браузере:
+Откройте http://localhost:8000
 
-- **Веб-интерфейс:** http://localhost:8000
-- **Swagger API:** http://localhost:8000/api/v1/docs
-- **Health:** http://localhost:8000/api/v1/health
+## Локальный запуск вручную
 
-## Локальная разработка (без Docker)
-
-```bash
+```powershell
 cd backend
-python -m venv venv
-# Windows: venv\Scripts\activate
-pip install -r requirements.txt
-set DATABASE_URL=sqlite:///./vuln_mgmt.db
-uvicorn app.main:app --reload --app-dir .
+py -3 -m pip install -r requirements.txt
+$env:PYTHONPATH = "."
+py -3 -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
 ```
 
-Из каталога `backend` (где лежит пакет `app`):
-
-```bash
-cd backend
-set PYTHONPATH=.
-uvicorn app.main:app --reload
-```
+База SQLite создаётся автоматически в `backend\vuln_mgmt.db` (путь не зависит от текущей папки).
 
 ## Основные возможности
 
@@ -74,53 +69,47 @@ uvicorn app.main:app --reload
 5. **Управление исправлением** — `PATCH /api/v1/findings/{id}`
 6. **Отчёты** — `GET /api/v1/reports/executive-summary`
 
-При первом запуске загружаются **демо-данные** (3 CVE, 3 пакета, находки).
-
 ## Тесты и безопасность
 
-```bash
+```powershell
 cd backend
-pip install -r requirements.txt
-set DISABLE_SEED=1
-pytest --cov=app --cov-report=term-missing -v
-bandit -r app -ll
-pip-audit -r requirements.txt
-ruff check app tests
+py -3 -m pip install -r requirements.txt
+$env:DISABLE_SEED = "1"
+$env:TESTING = "1"
+py -3 -m pytest --cov=app --cov-report=term-missing -v
+py -3 -m ruff check app tests
+py -3 -m bandit -r app -ll
 ```
 
 ## Структура проекта
 
 ```
+├── start.ps1              # запуск на Windows
 ├── backend/
-│   ├── app/           # приложение FastAPI
-│   ├── tests/         # pytest
-│   ├── Dockerfile
-│   └── requirements.txt
-├── docs/ARCHITECTURE.md
+│   ├── app/               # FastAPI, NVD/EPSS, веб-UI
+│   └── tests/             # pytest
+├── docs/                  # архитектура, демо, презентация
 ├── docker-compose.yml
 ├── POYASNITELNA_ZAPISKA.md
 └── .github/workflows/ci.yml
 ```
 
-## Git Flow (рекомендация по методичке)
+## Git Flow
 
-- `main` — стабильная версия
+- `main` — стабильная версия (релиз для защиты)
 - `develop` — интеграция
-- `feature/*` — новые функции
-- Коммиты: `feat:`, `fix:`, `docs:`, `test:` (Conventional Commits)
+- Коммиты: `feat:`, `fix:`, `docs:`, `test:`
 
 ## Документация
 
 | Документ | Назначение |
 |----------|------------|
 | [Пояснительная записка](POYASNITELNA_ZAPISKA.md) | Текст курсовой |
-| [Архитектура](docs/ARCHITECTURE.md) | Диаграммы Mermaid |
-| [Презентация](docs/PREZENTACIYA.md) | Структура слайдов к защите |
-| [Сценарий демо](docs/DEMO_ZASHCHITA.md) | Пошаговая демонстрация |
-| [Приложения](docs/PRILOZHENIYA.md) | Список скриншотов |
-| [Задание (вариант 4)](ZADANIE_KURSOVOJ.md) | Соответствие теме |
-
-**Репозиторий:** https://github.com/vadeetar/Kursach
+| [Архитектура](docs/ARCHITECTURE.md) | Диаграммы |
+| [Презентация](docs/PREZENTACIYA.md) | Слайды к защите |
+| [Сценарий демо](docs/DEMO_ZASHCHITA.md) | Демонстрация |
+| [Скриншоты](SCREENSHOTS_GUIDE.md) | Приложения к записке |
+| [Задание](ZADANIE_KURSOVOJ.md) | Вариант 4 |
 
 ## Переменные окружения
 
@@ -128,4 +117,4 @@ ruff check app tests
 
 ## AI-ассистированная разработка
 
-Проект создан с использованием AI-ассистента (Cursor) для ускорения проектирования API, тестов и документации в соответствии с требованиями методических указаний 2026 г.
+Проект разработан с использованием AI-ассистента (Cursor) в соответствии с методическими указаниями 2026 г.

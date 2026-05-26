@@ -4,7 +4,6 @@ import os
 from functools import lru_cache
 from pathlib import Path
 
-# Абсолютный путь к SQLite — не зависит от текущей папки в терминале
 _BACKEND_DIR = Path(__file__).resolve().parent.parent
 _DEFAULT_SQLITE_URL = f"sqlite:///{(_BACKEND_DIR / 'vuln_mgmt.db').as_posix()}"
 
