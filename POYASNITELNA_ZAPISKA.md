@@ -244,8 +244,8 @@ SLA (дней): critical — 7, high — 14, medium — 30, low — 90.
 
 Команда: `cd backend && set DISABLE_SEED=1 && set TESTING=1 && pytest --cov=app`
 
-- **Тестов:** 20 (все успешны)  
-- **Покрытие:** ~66% (модули models/schemas >95%, API routes ~69%)  
+- **Тестов:** 24 (все успешны)  
+- **Покрытие:** ~71% (модули models/schemas >95%, API routes ~69%)  
 - **SAST:** Bandit без критических замечаний в CI  
 
 Примеры тестов: `tests/test_models.py`, `tests/test_api.py`, `tests/test_api_extended.py`, `tests/test_services.py`.
