@@ -1,14 +1,26 @@
-# Как оформить пояснительную записку в Word
+# Как оформить курсовую в Word
 
-## Шаг 1 — Сгенерировать DOCX
+## Полная курсовая (рекомендуется)
 
 ```powershell
 cd E:\курсач
 py -3 -m pip install python-docx
+py -3 docs\generate_kursovaya_full.py
+```
+
+Файл: **`E:\курсач\KURSOVAYA_RABOTA.docx`** — титул, задание, реферат, все главы, приложения.
+
+## Краткая записка
+
+```powershell
 py -3 docs\generate_docx.py
 ```
 
-Откроется файл: **`E:\курсач\POYASNITELNA_ZAPISKA.docx`**
+Файл: **`POYASNITELNA_ZAPISKA.docx`**
+
+## Какую модель AI выбрать в Cursor
+
+См. **`docs/KAKOY_MODEL_VYBRAT.md`** — для текста лучше **Opus 4.8 High** + **MAX Mode**.
 
 ## Шаг 2 — Доработать в Word
 
